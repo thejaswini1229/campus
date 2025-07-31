@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Transport Management{% endblock %}
+
+{% block content %}
+<div class="management-container">
+    <div class="form-section">
+        <h2><i class="fas fa-bus"></i> Add/Update Bus Route</h2>
+        
+        <form method="POST" action="{{ url_for('manage_transport') }}">
+            <div class="form-group">
+                <label for="bus_number">Bus Number</label>
+                <input type="text" id="bus_number" name="bus_number" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="route">Route</label>
+                <input type="text" id="route" name="route" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="morning_timing">Morning Timing</label>
+                <input type="time" id="morning_timing" name="morning_timing" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="evening_timing">Evening Timing</label>
+                <input type="time" id="evening_timing" name="evening_timing" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Save Route</button>
+        </form>
+    </div>
+    
+    <div class="list-section">
+        <h2>Existing Bus Routes</h2>
+        
+        <div class="transport-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Bus Number</th>
+                        <th>Route</th>
+                        <th>Morning</th>
+                        <th>Evening</th>
+                        <th>Last Updated</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for route in routes %}
+                    <tr>
+                        <td>{{ route.bus_number }}</td>
+                        <td>{{ route.route }}</td>
+                        <td>{{ route.morning_timing }}</td>
+                        <td>{{ route.evening_timing }}</td>
+                        <td>{{ route.last_updated }}</td>
+                        <td>
+                            <a href="{{ url_for('delete_route', id=route.id) }}" 
+                               class="btn btn-danger btn-small" 
+                               onclick="return confirm('Are you sure you want to delete this route?')">
+                                <i class="fas fa-trash"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6">No transport routes found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
